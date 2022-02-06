@@ -22,7 +22,6 @@ meizu
 metasr
 micromessenger
 miui
-miuibrowser
 msnbot
 oneplus
 oppo

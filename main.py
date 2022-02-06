@@ -1,6 +1,7 @@
 
 
 # Reads the UA list from the file "ua_list.txt"
+# Refer this site for list of UAs: https://developers.whatismybrowser.com/useragents/explore/
 ua_file = open("ua_list.txt", "r")
 lines = ua_file.readlines()
 ua_list = []
@@ -24,13 +25,14 @@ ua_file_sorted.close
 
 
 # Generate Cloudflare configuration in the string "ua_list_cf"
+# Using Cloudflare case insensitive matching lower()
 ua_list_cf = ""
 i = 0
 for ua in ua_list:
     if (i < ua_list_count - 1):
-        cf_single_rule = "(http.user_agent contains \"" + ua + "\") or "
+        cf_single_rule = "(lower(http.user_agent) contains \"" + ua + "\") or "
     else:
-        cf_single_rule = "(http.user_agent contains \"" + ua + "\")"
+        cf_single_rule = "(lower(http.user_agent) contains \"" + ua + "\")"
     ua_list_cf = ua_list_cf + cf_single_rule
     i += 1
 
@@ -47,10 +49,11 @@ print("Cloudflare firewall rules generated in the file 'ua_list_cf.txt'")
 ua_list_nginx = "if ($http_user_agent ~* ("
 i = 0
 for ua in ua_list:
+    ua_escaped = ua.replace(" ","\ ")
     if (i < ua_list_count - 1):
-        nginx_single_rule = ua + "|"
+        nginx_single_rule = ua_escaped + "|"
     else:
-        nginx_single_rule = ua
+        nginx_single_rule = ua_escaped
     i += 1
     ua_list_nginx = ua_list_nginx + nginx_single_rule
 ua_list_nginx = ua_list_nginx + ")) {\n    return 403;\n}"
