@@ -31,7 +31,7 @@ taobrowser
 tencent
 teoma
 the world
-twitter
+twitterbot
 ucweb
 wechat
 weibo
